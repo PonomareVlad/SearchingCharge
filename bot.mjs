@@ -44,7 +44,7 @@ bot.on('text', async msg => {
             return await Data.questions[user.question].messages.reduce((promise, message) =>
                 promise.then(() => msg.reply.text(message)), Promise.resolve())
         } else {
-            const replyMarkup = bot.keyboard([[bot.button(Data.button)]], {once: true})
+            const replyMarkup = bot.keyboard([[bot.button(Data.button)]], {once: true, resize: true})
             return await Data.intro.reduce((promise, message) =>
                 promise.then(() => msg.reply.text(message, {replyMarkup})), Promise.resolve())
         }
