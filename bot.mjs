@@ -41,6 +41,9 @@ bot.on('text', async msg => {
             user.start = true;
             user.question = 0;
             user = await fetchUser({id: user.id, start: user.start, question: user.question});
+            const url = Data.stickers.url;
+            const replyMarkup = bot.inlineKeyboard([[bot.inlineButton(Data.stickers.button, {url})]]);
+            await msg.reply.text(Data.stickers.message, {replyMarkup})
             return await Data.questions[user.question].messages.reduce((promise, message) =>
                 promise.then(() => msg.reply.text(message)), Promise.resolve())
         } else {

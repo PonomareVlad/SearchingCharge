@@ -7,6 +7,11 @@ export default {
         "Отправь все 6 слов, дождись подтверждения и получи крутой приз!\nНу что, начинаем?"
     ],
     "button": "Иду с бобром",
+    "stickers": {
+        "message": "Нажми кнопку, чтобы добавить себе стикер-пак",
+        "button": "Добавить стикер-пак",
+        "url": "https://t.me/addstickers/farmlend_ru"
+    },
     "questions": [
         {
             "messages": [
