@@ -4,6 +4,12 @@
       "includeFiles": "node_modules/telebot/plugins/**"
     }
   },
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://t.me/SearchingChargeBot"
+    }
+  ],
   "github": {
     "silent": true
   }
