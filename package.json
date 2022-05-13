@@ -1,13 +1,12 @@
 {
-  "name": "telebot-vercel",
-  "version": "1.0.0",
+  "name": "searching-charge-bot",
   "author": "PonomareVlad",
   "scripts": {
     "dev": "vc dev",
-    "tunnel": "lt --port 3000 & vc dev"
+    "tunnel": "lt --subdomain searching-charge --port 3000 & vc dev"
   },
   "dependencies": {
-    "mongodb": "^4.5.0",
+    "mongodb": "latest",
     "telebot": "latest"
   }
 }

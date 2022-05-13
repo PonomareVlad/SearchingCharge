@@ -1,4 +1,4 @@
-import bot from '../bot.mjs'
+import bot from '../src/bot.mjs'
 
 const isDev = process.env.VERCEL_ENV === 'development',
     webHookURL = host => `https://${host}/api/telegram.mjs`
