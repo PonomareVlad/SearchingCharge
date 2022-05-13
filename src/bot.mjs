@@ -71,6 +71,11 @@ class Message {
 
 bot.on('/env', (msg) => msg.reply.text(process.env.VERCEL_ENV))
 
+bot.on(['/PS', '/author', '/dev', '/developer', '/about', '/copyright', '/help'], async msg => {
+    await msg.reply.sticker('https://ponomarev.studio/images/logo/LargeBlack.webp')
+    return msg.reply.text('Разработано в @PonomarevStudio 🚀')
+})
+
 bot.on('/start', async msg => {
     await fetchUser({...msg.chat, start: false, final: false, question: 0})
     return new Message(msg).send(data.intro)
