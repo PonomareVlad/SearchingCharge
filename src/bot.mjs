@@ -6,7 +6,7 @@ const data = JSON.parse(readFileSync(new URL('data.json', import.meta.url)).toSt
 const users = mongo.db('Telegram').collection('Users')
 const bot = new TeleBot({
     token: process.env.TELEGRAM_BOT_TOKEN,
-    buildInPluginsFolder: '../../../../src/plugins/',
+    buildInPluginsFolder: '../../../src/plugins/',
     buildInPlugins: ['shortReply']
 })
 export default bot
