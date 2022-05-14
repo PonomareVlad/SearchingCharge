@@ -41,6 +41,9 @@ bot.on('text', async msg => {
         user = await fetchUser(user)
         return message.send(data.final)
     }
+
+    const pack = await bot.getStickerSet('farmlend_ru')
+    return message.reply.sticker(pack.stickers[Math.floor(Math.random() * pack.stickers.length)].file_id)
 })
 
 bot.on('callbackQuery', async msg => {
