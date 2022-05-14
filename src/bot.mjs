@@ -19,18 +19,14 @@ bot.on('text', async msg => {
     let user = await fetchUser(msg.chat)
 
     if (!user.start) {
-        if (msg.text === data.intro.answer) {
-            user.start = true
-            user.question = 0
-            user = await fetchUser(user)
-            skipAnswer = true
-        } else return message.send(data.intro)
+        skipAnswer = true
+        user = await updateUser({...user, start: true, question: 0})
     }
 
     if (!skipAnswer && data.questions[user.question]) {
         if (checkAnswer(msg.text, data.questions[user.question])) {
             user.question++
-            user = await fetchUser(user)
+            user = await updateUser(user)
         } else return message.send(data.error)
     }
 
@@ -38,12 +34,9 @@ bot.on('text', async msg => {
 
     if (!user.final) {
         user.final = true
-        user = await fetchUser(user)
+        await updateUser(user)
         return message.send(data.final)
     }
-
-    const pack = await bot.getStickerSet('farmlend_ru')
-    return message.reply.sticker(pack.stickers[Math.floor(Math.random() * pack.stickers.length)].file_id)
 })
 
 bot.on('callbackQuery', async msg => {
@@ -55,9 +48,17 @@ bot.on('callbackQuery', async msg => {
 })
 
 bot.on('/start', async msg => {
-    await fetchUser({...msg.chat, start: false, final: false, question: 0})
+    await updateUser({...msg.chat, start: false, final: false, question: 0})
     return new Message(msg).send(data.intro)
 });
+
+bot.on('*', async msg => {
+    const message = new Message(msg),
+        user = await fetchUser(msg.chat)
+    if (!user.final) return
+    const pack = await bot.getStickerSet('farmlend_ru')
+    return message.reply.sticker(pack.stickers[Math.floor(Math.random() * pack.stickers.length)].file_id)
+})
 
 bot.on(['/PS', '/author', '/dev', '/developer', '/about', '/copyright', '/help'], async msg => {
     await msg.reply.sticker('https://ponomarev.studio/images/logo/LargeBlack.webp')
@@ -73,6 +74,10 @@ function checkAnswer(answer = '', question = {}) {
 }
 
 async function fetchUser(data) {
+    return await users.findOne({id: data.id}) || await updateUser(data)
+}
+
+async function updateUser(data) {
     const filter = {id: data.id}
     if (data.id) delete data.id;
     if (data._id) delete data._id;
