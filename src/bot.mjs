@@ -43,6 +43,14 @@ bot.on('text', async msg => {
     }
 })
 
+bot.on('callbackQuery', async msg => {
+    const user = await fetchUser(msg.message.chat)
+    switch (msg.data) {
+        case 'question':
+            return Message.sendTo(user.id, data.questions[user.question])
+    }
+})
+
 bot.on('/start', async msg => {
     await fetchUser({...msg.chat, start: false, final: false, question: 0})
     return new Message(msg).send(data.intro)
