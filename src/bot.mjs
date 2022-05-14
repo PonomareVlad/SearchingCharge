@@ -53,6 +53,7 @@ bot.on('/start', async msg => {
 });
 
 bot.on('*', async msg => {
+    if (isCommand(msg?.text)) return
     const message = new Message(msg),
         user = await fetchUser(msg.chat)
     if (!user.final) return
