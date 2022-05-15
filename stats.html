@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="dark light" name="color-scheme">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0" name="viewport">
+    <title>Bot stats</title>
+    <style>
+        :root {
+            font-family: Helvetica, sans-serif;
+            font-size: 20px;
+        }
+
+        span {
+            opacity: .5;
+        }
+    </style>
+</head>
+<body>
+<h1>Статистика бота</h1>
+<p>
+    <span>Всего участников:</span>
+    <output id="users">...</output>
+</p>
+<p>
+    <span>Финалистов:</span>
+    <output id="final">...</output>
+</p>
+<p>
+    <span>Загадка №1:</span>
+    <output id="1">...</output>
+</p>
+<p>
+    <span>Загадка №2:</span>
+    <output id="2">...</output>
+</p>
+<p>
+    <span>Загадка №3:</span>
+    <output id="3">...</output>
+</p>
+<p>
+    <span>Загадка №4:</span>
+    <output id="4">...</output>
+</p>
+<p>
+    <span>Загадка №5:</span>
+    <output id="5">...</output>
+</p>
+<p>
+    <span>Загадка №6:</span>
+    <output id="6">...</output>
+</p>
+<p>
+</body>
+<script>
+    const fetchStats = async () => {
+        const data = await fetch('/api/stats.mjs').then(r => r.json())
+        Object.entries(data).forEach(([id, value]) =>
+            document.getElementById(id).innerText = value)
+    }
+    setInterval(fetchStats, 500)
+</script>
+</html>
