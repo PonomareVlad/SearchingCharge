@@ -4,6 +4,12 @@
       "includeFiles": "src/**"
     }
   },
+  "rewrites": [
+    {
+      "source": "users.csv",
+      "destination": "/api/users.mjs"
+    }
+  ],
   "redirects": [
     {
       "source": "/",
