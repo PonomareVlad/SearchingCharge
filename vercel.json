@@ -6,7 +6,7 @@
   },
   "rewrites": [
     {
-      "source": "users.csv",
+      "source": "/users.csv",
       "destination": "/api/users.mjs"
     }
   ],
