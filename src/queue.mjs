@@ -14,6 +14,8 @@ export default class Queue {
 
     static getFilter = (status = 'new') => ({status, $or: [{callAfter: null}, {callAfter: {$lte: Date.now()}}]})
 
+    static availableTasksCount = async (filter = this.getFilter()) => await tasks.countDocuments(filter)
+
     async run() {
         const tasksCount = await tasks.countDocuments(this.constructor.getFilter())
         if (!tasksCount) return {message: 'Empty queue', tasksCount}
