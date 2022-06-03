@@ -1,10 +1,10 @@
 import Message from "./message.mjs"
 import {readFileSync} from "fs"
 import TeleBot from "telebot"
-import mongo from './db.mjs'
+import Admin from "./admin.mjs"
+import {users} from "./user.mjs"
 
 const data = JSON.parse(readFileSync(new URL('data.json', import.meta.url)).toString()),
-    users = mongo.db('Telegram').collection('Users'),
     broadcastMode = process.env.MODE === 'broadcast',
     isCommand = text => text && text[0] === '/',
     bot = new TeleBot({
@@ -40,10 +40,11 @@ bot.on('text', async msg => {
     }
 })
 
-bot.on('callbackQuery', async msg => {
+bot.on('callbackQuery', async query => {
+    if (await Admin.isAdmin(query?.message?.chat?.id)) return Admin.callback(query)
     if (broadcastMode) return
-    const user = await fetchUser(msg.message.chat)
-    switch (msg.data) {
+    const user = await fetchUser(query.message.chat)
+    switch (query.data) {
         case 'question':
             return Message.sendTo(user.id, data.questions[user.question])
     }
@@ -55,6 +56,7 @@ bot.on('/start', async msg => {
 });
 
 bot.on('*', async msg => {
+    if (await Admin.isAdmin(msg.chat.id)) return Admin.message(msg)
     if (isCommand(msg?.text)) return
     const message = new Message(msg)
     if (!broadcastMode) {

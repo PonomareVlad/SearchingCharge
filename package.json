@@ -11,7 +11,9 @@
   "dependencies": {
     "dotenv": "latest",
     "mongodb": "latest",
-    "telebot": "latest"
+    "serialize-error": "latest",
+    "simple-async-sleep": "latest",
+    "telebot": "PonomareVlad/telebot"
   },
   "devDependencies": {
     "es-micro-dev": "latest"

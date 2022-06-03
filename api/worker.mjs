@@ -1,6 +1,9 @@
 import {config} from 'dotenv'
 import Queue from "../src/queue.mjs";
 
-config({path: '../'})
+config()
 
-export default async (req, res) => res.json(await Queue.run())
+export default async (req, res) => {
+    const result = await Queue.run()
+    return res.json ? res.json(result) : result
+}
