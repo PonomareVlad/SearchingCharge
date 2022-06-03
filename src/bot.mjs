@@ -5,6 +5,7 @@ import mongo from './db.mjs'
 
 const data = JSON.parse(readFileSync(new URL('data.json', import.meta.url)).toString()),
     users = mongo.db('Telegram').collection('Users'),
+    broadcastMode = process.env.MODE === 'broadcast',
     isCommand = text => text && text[0] === '/',
     bot = new TeleBot({
         token: process.env.TELEGRAM_BOT_TOKEN,
@@ -13,7 +14,7 @@ const data = JSON.parse(readFileSync(new URL('data.json', import.meta.url)).toSt
     })
 
 bot.on('text', async msg => {
-    if (isCommand(msg.text)) return
+    if (isCommand(msg.text) || broadcastMode) return
     let skipAnswer;
     const message = new Message(msg)
     let user = await fetchUser(msg.chat)
@@ -40,6 +41,7 @@ bot.on('text', async msg => {
 })
 
 bot.on('callbackQuery', async msg => {
+    if (broadcastMode) return
     const user = await fetchUser(msg.message.chat)
     switch (msg.data) {
         case 'question':
@@ -49,14 +51,16 @@ bot.on('callbackQuery', async msg => {
 
 bot.on('/start', async msg => {
     await updateUser({...msg.chat, start: false, final: false, question: 0})
-    return new Message(msg).send(data.intro)
+    return new Message(msg).send(broadcastMode ? data.broadcast_intro : data.intro)
 });
 
 bot.on('*', async msg => {
     if (isCommand(msg?.text)) return
-    const message = new Message(msg),
-        user = await fetchUser(msg.chat)
-    if (!user.final) return
+    const message = new Message(msg)
+    if (!broadcastMode) {
+        const user = await fetchUser(msg.chat)
+        if (!user.final) return
+    }
     const pack = await bot.getStickerSet('farmlend_ru')
     return message.reply.sticker(pack.stickers[Math.floor(Math.random() * pack.stickers.length)].file_id)
 })

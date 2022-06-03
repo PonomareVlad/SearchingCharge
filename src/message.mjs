@@ -57,8 +57,12 @@ export default class Message {
     send(data) {
         if (typeof data == "string") return this.reply.text(data)
 
-        if (data.messages && Array.isArray(data.messages))
-            return data.messages.reduce((promise, message) => promise.then(() => this.send(message)), Promise.resolve())
+        const messages = Array.isArray(data) ? data : (data.messages && Array.isArray(data.messages) ? data.messages : null)
+
+        if (messages) return messages.reduce((promise, message) => promise.then(() => this.send(message)), Promise.resolve())
+
+        /*if (data.messages && Array.isArray(data.messages))
+            return data.messages.reduce((promise, message) => promise.then(() => this.send(message)), Promise.resolve())*/
 
         const options = {}
 

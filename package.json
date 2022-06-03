@@ -1,12 +1,19 @@
 {
   "name": "searching-charge-bot",
   "author": "PonomareVlad",
+  "main": "api/worker.mjs",
   "scripts": {
     "dev": "vc dev",
+    "worker-dev": "micro-dev",
+    "worker": "micro -l tcp://0.0.0.0:${PORT-3000}",
     "tunnel": "lt --subdomain searching-charge --port 3000 & vc dev"
   },
   "dependencies": {
+    "dotenv": "latest",
     "mongodb": "latest",
     "telebot": "latest"
+  },
+  "devDependencies": {
+    "es-micro-dev": "latest"
   }
 }
